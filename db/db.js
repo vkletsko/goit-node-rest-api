@@ -6,16 +6,17 @@ class Database {
       return Database.instance;
     }
 
-    this.sequelize = new Sequelize({
-      dialect: process.env.DATABASE_DIALECT || "postgres",
-      username: process.env.DATABASE_USERNAME || "postgres",
-      password: process.env.DATABASE_PASSWORD || "postgres",
-      host: process.env.DATABASE_HOST || "postgres",
-      database: process.env.DATABASE_NAME || "postgres",
-      port: process.env.DATABASE_PORT || 5432,
-      dialectOptions: {
-        ssl: true,
-      },
+    this.sequelize = new Sequelize(
+        process.env.DATABASE_NAME,
+        process.env.DATABASE_USERNAME,
+        process.env.DATABASE_PASSWORD,
+        {
+          host: process.env.DATABASE_HOST,
+          port: process.env.DATABASE_PORT,
+          dialect: process.env.DATABASE_DIALECT,
+          dialectOptions: {
+            ssl: true,
+          },
     });
 
 
