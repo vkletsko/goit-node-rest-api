@@ -19,8 +19,6 @@ class Database {
           },
     });
 
-
-    this.connect();
     Database.instance = this;
     Object.freeze(this);
   }
