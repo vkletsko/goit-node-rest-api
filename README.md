@@ -19,3 +19,7 @@
 
 #### Update contact
 ![updatecontact](doc/update_contact.png)
+
+### HW03-Express REST API
+#### Update favorite status
+![updatecontact](doc/update_favorite.png)

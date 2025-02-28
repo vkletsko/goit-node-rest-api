@@ -1,4 +1,4 @@
-import {listContacts, getContactById, removeContact, addContact, updateContactById} from "../services/contactsServices.js";
+import {listContacts, getContactById, removeContact, addContact, updateContactById, updateStatusContact} from "../services/contactsServices.js";
 
 export const getAllContacts = async (req, res) => {
     try {
@@ -72,3 +72,16 @@ export const updateContact = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+export async function updateFavorite(req, res) {
+    const { id } = req.params;
+    const { favorite } = req.body;
+
+    const updatedContact = await updateStatusContact(id, favorite);
+
+    if (!updatedContact) {
+        return res.status(404).json({ message: "Not found" });
+    }
+
+    return res.status(200).json(updatedContact);
+}
