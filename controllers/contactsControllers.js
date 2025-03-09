@@ -2,7 +2,8 @@ import {listContacts, getContactById, removeContact, addContact, updateContactBy
 
 export const getAllContacts = async (req, res) => {
     try {
-        const contacts = await listContacts();
+        const userId = req.user.dataValues.id;
+        const contacts = await listContacts(userId);
         res.status(200).json(contacts);
     } catch (error) {
         console.error("Error with get contacts:", error);
@@ -12,8 +13,9 @@ export const getAllContacts = async (req, res) => {
 
 export const getOneContact = async (req, res) => {
     try {
+        const userId = req.user.dataValues.id;
         const { id } = req.params;
-        const contact = await getContactById(id);
+        const contact = await getContactById(id, userId);
         if (contact) {
             res.status(200).json(contact);
         } else {
@@ -27,8 +29,9 @@ export const getOneContact = async (req, res) => {
 
 export const deleteContact = async (req, res) => {
     try {
+        const userId = req.user.dataValues.id;
         const { id } = req.params;
-        const removedContact = await removeContact(id);
+        const removedContact = await removeContact(id, userId);
         if (removedContact) {
             res.status(200).json(removedContact);
         } else {
@@ -42,10 +45,12 @@ export const deleteContact = async (req, res) => {
 
 export const createContact = async (req, res) => {
     try {
+        const userId = req.user.dataValues.id;
         const newContact = await addContact(
             req.body.name,
             req.body.email,
-            req.body.phone
+            req.body.phone,
+            userId
         );
         res.status(201).json(newContact);
     } catch (error) {
@@ -60,8 +65,9 @@ export const updateContact = async (req, res) => {
             return res.status(400).json({ message: "Body must have at least one field" });
         }
 
+        const userId = req.user.dataValues.id;
         const { id } = req.params;
-        const updatedContact = await updateContactById(id, req.body);
+        const updatedContact = await updateContactById(id, userId, req.body);
         if (updatedContact) {
             res.status(200).json(updatedContact);
         } else {
@@ -74,10 +80,11 @@ export const updateContact = async (req, res) => {
 };
 
 export async function updateFavorite(req, res) {
+    const userId = req.user.dataValues.id;
     const { id } = req.params;
     const { favorite } = req.body;
 
-    const updatedContact = await updateStatusContact(id, favorite);
+    const updatedContact = await updateStatusContact(id, userId, favorite);
 
     if (!updatedContact) {
         return res.status(404).json({ message: "Not found" });
