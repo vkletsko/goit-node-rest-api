@@ -16,6 +16,9 @@ const Contact = sequelize.define("Contact", {
     favorite: {
         type: DataTypes.BOOLEAN, defaultValue: false,
     },
+    owner: {
+        type: DataTypes.INTEGER, allowNull: false,
+    },
 }, {
     tableName: "contacts", timestamps: false,
 });

@@ -1,6 +1,6 @@
 import HttpError from "./HttpError.js";
 
-const validateBody = (schema) => {
+const validateBodyWithPathId = (schema) => {
   const func = (req, _, next) => {
     const { id } = req.params;
     const numericId = Number(id);
@@ -19,4 +19,16 @@ const validateBody = (schema) => {
   return func;
 };
 
-export default validateBody;
+const validateBody = (schema) => {
+  const func = (req, _, next) => {
+    const { error } = schema.validate(req.body);
+    if (error) {
+      next(HttpError(400, error.message));
+    }
+    next();
+  };
+
+  return func;
+};
+
+export { validateBody, validateBodyWithPathId };
