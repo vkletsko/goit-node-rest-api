@@ -10,8 +10,15 @@ class UsersRepository {
         return await User.findOne( { where: { id } });
     }
 
-    async create(email, password) {
-        return await User.create({ email, password });
+    async create(email, password, avatarURL) {
+        return await User.create({ email, password, avatarURL });
+    }
+
+    async updateAvatar(userId, avatarURL) {
+        const [rowsUpdated, [updatedUser]] = await User.update({ avatarURL }, {
+            where: {id: userId}, returning: true
+        });
+        return rowsUpdated ? updatedUser : null;
     }
 }
 
